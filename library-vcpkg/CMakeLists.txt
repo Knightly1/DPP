@@ -50,11 +50,12 @@ target_link_options(
 	"$<$<PLATFORM_ID:Windows>:/DEBUG>"
 )
 
-add_compile_definitions(HAVE_VOICE)
+if(BUILD_VOICE_SUPPORT)
+	add_compile_definitions(HAVE_VOICE)
+endif()
 
 if(NOT BUILD_SHARED_LIBS)
 	find_package(nlohmann_json CONFIG REQUIRED STATIC)
-	find_package(OpenSSL REQUIRED)
 	if(BUILD_VOICE_SUPPORT)
 		find_package(Opus CONFIG REQUIRED STATIC)
 	endif()
@@ -62,13 +63,14 @@ if(NOT BUILD_SHARED_LIBS)
 	find_package(ZLIB REQUIRED STATIC)
 else()
 	find_package(nlohmann_json CONFIG REQUIRED)
-	find_package(OpenSSL REQUIRED)
 	if(BUILD_VOICE_SUPPORT)
 		find_package(Opus CONFIG REQUIRED)
 	endif()
 	find_package(unofficial-sodium CONFIG REQUIRED)
 	find_package(ZLIB REQUIRED)
 endif()
+
+find_package(OpenSSL REQUIRED)
 
 target_link_libraries(
 	"${LIB_NAME}" PUBLIC
