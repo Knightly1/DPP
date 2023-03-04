@@ -72,12 +72,12 @@ endif()
 
 target_link_libraries(
     "${LIB_NAME}" PUBLIC
-    $<$<BOOL:${nlohmann_json_FOUND}>:${nlohmann_json_LIBRARIES}>
-    $<$<BOOL:${OpenSSL_FOUND}>:${OpenSSL_LIBRARIES}>
-    $<$<BOOL:${Opus_FOUND}>:${Opus_LIBRARIES}>
-    $<$<BOOL:${unofficial-sodium_FOUND}>:${unofficial-sodium_LIBRARIES}>
-    $<$<BOOL:${ZLIB_FOUND}>:${ZLIB_LIBRARIES}>
-    $<$<TARGET_EXISTS:Threads::Threads>:Threads::Threads>
+    "$<${nlohmann_json_FOUND}:${nlohmann_json_LIBRARIES}>"
+    "$<${OpenSSL_FOUND}:${OpenSSL_LIBRARIES}>"
+    "$<${Opus_FOUND}:${Opus_LIBRARIES}>"
+    "$<${unofficial-sodium_FOUND}:${unofficial-sodium_LIBRARIES}>"
+    "$<${ZLIB_FOUND}:${ZLIB_LIBRARIES}>"
+    "$<${Threads_FOUND}:${Threads_LIBRARIES}>"
 )
 
 set(CONFIG_FILE_NAME "${PROJECT_NAME}Config.cmake")
