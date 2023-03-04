@@ -54,7 +54,7 @@ add_compile_definitions(HAVE_VOICE)
 
 if(NOT BUILD_SHARED_LIBS)
 	find_package(nlohmann_json CONFIG REQUIRED STATIC)
-	find_package(OpenSSL REQUIRED STATIC)
+	find_package(OpenSSL REQUIRED)
 	if(BUILD_VOICE_SUPPORT)
 		find_package(Opus CONFIG REQUIRED STATIC)
 	endif()
