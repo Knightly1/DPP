@@ -71,13 +71,14 @@ else()
 endif()
 
 target_link_libraries(
-    "${LIB_NAME}" PUBLIC
-    "$<$<${nlohmann_json_FOUND}>:${nlohmann_json_LIBRARIES}>"
-    "$<$<${OpenSSL_FOUND}>:${OpenSSL_LIBRARIES}>"
-    "$<$<${Opus_FOUND}>:${Opus_LIBRARIES}>"
-    "$<$<${unofficial-sodium_FOUND}>:${unofficial-sodium_LIBRARIES}>"
-    "$<$<${ZLIB_FOUND}>:${ZLIB_LIBRARIES}>"
-    "$<$<${Threads_FOUND}>:${Threads_LIBRARIES}>"
+	"${LIB_NAME}" PUBLIC
+	$<$<TARGET_EXISTS:nlohmann_json::nlohmann_json>:nlohmann_json::nlohmann_json>
+	$<$<TARGET_EXISTS:OpenSSL::SSL>:OpenSSL::SSL>
+	$<$<TARGET_EXISTS:OpenSSL::Crypto>:OpenSSL::Crypto>
+	$<$<TARGET_EXISTS:Opus::opus>:Opus::opus>
+	$<$<TARGET_EXISTS:unofficial-sodium::sodium>:unofficial-sodium::sodium>
+	$<$<TARGET_EXISTS:ZLIB::ZLIB>:ZLIB::ZLIB>
+	$<$<TARGET_EXISTS:Threads::Threads>:Threads::Threads>
 )
 
 set(CONFIG_FILE_NAME "${PROJECT_NAME}Config.cmake")
