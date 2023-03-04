@@ -52,21 +52,32 @@ target_link_options(
 
 add_compile_definitions(HAVE_VOICE)
 
-find_package(nlohmann_json CONFIG REQUIRED)
-find_package(OpenSSL REQUIRED)
-find_package(Opus CONFIG REQUIRED)
-find_package(unofficial-sodium CONFIG REQUIRED)
-find_package(ZLIB REQUIRED)
+if(NOT BUILD_SHARED_LIBS)
+	find_package(nlohmann_json CONFIG REQUIRED STATIC)
+	find_package(OpenSSL REQUIRED STATIC)
+	if(BUILD_VOICE_SUPPORT)
+		find_package(Opus CONFIG REQUIRED STATIC)
+	endif()
+	find_package(unofficial-sodium CONFIG REQUIRED STATIC)
+	find_package(ZLIB REQUIRED STATIC)
+else()
+	find_package(nlohmann_json CONFIG REQUIRED)
+	find_package(OpenSSL REQUIRED)
+	if(BUILD_VOICE_SUPPORT)
+		find_package(Opus CONFIG REQUIRED)
+	endif()
+	find_package(unofficial-sodium CONFIG REQUIRED)
+	find_package(ZLIB REQUIRED)
+endif()
 
 target_link_libraries(
-	"${LIB_NAME}" PUBLIC
-	$<$<TARGET_EXISTS:nlohmann_json::nlohmann_json>:nlohmann_json::nlohmann_json>
-	$<$<TARGET_EXISTS:OpenSSL::SSL>:OpenSSL::SSL>
-	$<$<TARGET_EXISTS:OpenSSL::Crypto>:OpenSSL::Crypto>
-	$<$<TARGET_EXISTS:Opus::opus>:Opus::opus>
-	$<$<TARGET_EXISTS:unofficial-sodium::sodium>:unofficial-sodium::sodium>
-	$<$<TARGET_EXISTS:ZLIB::ZLIB>:ZLIB::ZLIB>
-	$<$<TARGET_EXISTS:Threads::Threads>:Threads::Threads>
+    "${LIB_NAME}" PUBLIC
+    $<$<BOOL:${nlohmann_json_FOUND}>:${nlohmann_json_LIBRARIES}>
+    $<$<BOOL:${OpenSSL_FOUND}>:${OpenSSL_LIBRARIES}>
+    $<$<BOOL:${Opus_FOUND}>:${Opus_LIBRARIES}>
+    $<$<BOOL:${unofficial-sodium_FOUND}>:${unofficial-sodium_LIBRARIES}>
+    $<$<BOOL:${ZLIB_FOUND}>:${ZLIB_LIBRARIES}>
+    $<$<TARGET_EXISTS:Threads::Threads>:Threads::Threads>
 )
 
 set(CONFIG_FILE_NAME "${PROJECT_NAME}Config.cmake")
